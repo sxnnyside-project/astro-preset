@@ -1,0 +1,44 @@
+/**
+ * reset.css
+ * Minimal normalization: normalizes browser defaults without destroying component intent.
+ */
+/* === Box Model === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* === Root Defaults === */
+html {
+  font-size: 16px;
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+/* === Body === */
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-x: clip;
+  min-height: 100vh;
+}
+main {
+  overflow-x: clip;
+}
+/* === Media === */
+img,
+video {
+  max-width: 100%;
+  display: block;
+}

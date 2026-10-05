@@ -1,0 +1,65 @@
+/**
+ * typography.css
+ * Base typographic element styles. Needs the design tokens listed in the package README.
+ */
+/* === Headings === */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+  margin: 0;
+}
+h1 {
+  font-size: var(--text-7xl);
+  font-weight: var(--weight-bold);
+}
+h2 {
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-bold);
+}
+h3 {
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+}
+h4 {
+  font-size: var(--text-2xl);
+  font-family: var(--font-identity);
+  font-weight: var(--weight-semibold);
+}
+h5,
+h6 {
+  font-size: var(--text-xl);
+  font-family: var(--font-ui);
+  font-weight: var(--weight-medium);
+}
+/* === Body Copy === */
+p {
+  font-family: var(--font-body);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  margin: 0;
+}
+/* === Inline Elements === */
+strong {
+  font-weight: var(--weight-bold);
+}
+small {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+/* === Code & Monospace === */
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+/* === Selection === */
+::selection {
+  background-color: var(--color-brand);
+  color: var(--color-text);
+}

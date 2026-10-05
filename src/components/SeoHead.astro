@@ -1,0 +1,101 @@
+---
+/**
+ * <SeoHead /> renders the metadata every Sxnnyside page needs, derived from the site's URL contract:
+ * title, description, canonical, hreflang alternates, Open Graph, Twitter card, theme colour and
+ * JSON-LD. Put it inside <head>; the layout keeps only what is its own (fonts, icons, scripts).
+ */
+import type { Site } from '../site';
+
+interface Props {
+  site: Site<string>;
+  title: string;
+  description: string;
+  /** Locale of the page. */
+  lang: string;
+  siteName: string;
+  /** Absolute URL or a path relative to the site origin. */
+  image?: string | undefined;
+  imageAlt?: string | undefined;
+  themeColor?: string | undefined;
+  robots?: string | undefined;
+  author?: string | undefined;
+  /** Twitter/X handle, with the leading @. */
+  twitterSite?: string | undefined;
+  ogType?: string | undefined;
+  /** Replaces the default WebSite graph; `false` renders none. */
+  jsonLd?: Record<string, unknown> | false | undefined;
+}
+
+const {
+  site,
+  title,
+  description,
+  lang,
+  siteName,
+  image,
+  imageAlt,
+  themeColor,
+  robots = 'index, follow',
+  author = 'Sxnnyside Project',
+  twitterSite,
+  ogType = 'website',
+  jsonLd,
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const canonical = site.canonicalUrl(pathname);
+const { xDefault, ...alternates } = site.alternatesFor(pathname);
+const tag = (l: string) => site.localeTags[l] ?? l;
+const ogLocale = (l: string) => tag(l).replace('-', '_');
+const absoluteImage = image
+  ? image.startsWith('http')
+    ? image
+    : `${site.origin}${image.startsWith('/') ? '' : '/'}${image}`
+  : undefined;
+
+const graph =
+  jsonLd === false
+    ? null
+    : (jsonLd ?? {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: title,
+        description,
+        url: canonical,
+        inLanguage: tag(lang),
+        publisher: {
+          '@type': 'Organization',
+          name: 'Sxnnyside Project',
+          url: 'https://sxnnysideproject.com',
+        },
+      });
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={robots} />
+<meta name="author" content={author} />
+{themeColor && <meta name="theme-color" content={themeColor} />}
+<link rel="canonical" href={canonical} />
+{Object.entries(alternates).map(([l, href]) => <link rel="alternate" hreflang={l} href={href} />)}
+<link rel="alternate" hreflang="x-default" href={xDefault} />
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content={ogLocale(lang)} />
+{Object.keys(alternates).filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ogLocale(l)} />)}
+{absoluteImage && <meta property="og:image" content={absoluteImage} />}
+{absoluteImage && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{absoluteImage && <meta name="twitter:image" content={absoluteImage} />}
+{twitterSite && <meta name="twitter:site" content={twitterSite} />}
+
+{graph && <script type="application/ld+json" set:html={JSON.stringify(graph)} />}

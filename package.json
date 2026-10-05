@@ -1,0 +1,111 @@
+{
+  "name": "@sxnnyside/astro-preset",
+  "version": "0.2.0",
+  "description": "Shared configuration for Sxnnyside Astro sites: astro.config, UnoCSS, security headers, tsconfig and Biome bases.",
+  "license": "LicenseRef-SPUL",
+  "private": true,
+  "author": {
+    "name": "Sxnnyside Project",
+    "url": "https://github.com/sxnnyside-project"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sxnnyside-project/astro-preset.git"
+  },
+  "homepage": "https://github.com/sxnnyside-project/astro-preset#readme",
+  "bugs": {
+    "url": "https://github.com/sxnnyside-project/astro-preset/issues"
+  },
+  "keywords": [
+    "astro-component",
+    "astro-integration"
+  ],
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "engines": {
+    "node": ">=22",
+    "bun": ">=1.4.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./uno": {
+      "types": "./dist/uno.d.ts",
+      "default": "./dist/uno.js"
+    },
+    "./headers": {
+      "types": "./dist/headers.d.ts",
+      "default": "./dist/headers.js"
+    },
+    "./env": {
+      "types": "./dist/env.d.ts",
+      "default": "./dist/env.js"
+    },
+    "./asset-pipeline": {
+      "types": "./dist/asset-pipeline/index.d.ts",
+      "default": "./dist/asset-pipeline/index.js"
+    },
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./biome.base.json": "./biome.base.json",
+    "./site": {
+      "types": "./dist/site/index.d.ts",
+      "default": "./dist/site/index.js"
+    },
+    "./i18n": {
+      "types": "./dist/i18n/index.d.ts",
+      "default": "./dist/i18n/index.js"
+    },
+    "./seo-head.astro": "./src/components/SeoHead.astro",
+    "./styles/reset.css": "./src/styles/reset.css",
+    "./styles/typography.css": "./src/styles/typography.css"
+  },
+  "bin": {
+    "sxnnyside-astro-check": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "src/components",
+    "src/styles",
+    "templates",
+    "tsconfig.base.json",
+    "biome.base.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun build src/index.ts src/uno.ts src/headers.ts src/env.ts src/site/index.ts src/i18n/index.ts src/asset-pipeline/index.ts --outdir dist --root src --target node --format esm --packages external && bun build src/checks/cli.ts --outfile dist/cli.js --target bun --packages external && tsc -p tsconfig.build.json",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "check": "bun run format:check && bun run lint && bun run typecheck && bun run test",
+    "clean": "rm -rf dist",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
+    "@iconify-json/mdi": "1.2.3",
+    "@iconify-json/mingcute": "1.2.8",
+    "@iconify-json/tabler": "1.2.41",
+    "@unocss/astro": "66.10.5",
+    "sitemap": "9.0.1",
+    "unocss": "66.10.5",
+    "vite": "^8.0.13",
+    "vite-plugin-toml": "0.9.0"
+  },
+  "peerDependencies": {
+    "astro": "^7.3.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-conventional": "21.2.3",
+    "@types/bun": "1.4.2",
+    "astro": "7.3.5",
+    "husky": "9.1.7",
+    "typescript": "7.0.2"
+  }
+}
